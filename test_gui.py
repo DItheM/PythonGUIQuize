@@ -17,6 +17,16 @@ questions = [
     "Who painted the Mona Lisa?",
     "Which gas do plants absorb during photosynthesis?",
     "Which is the longest river in the world?",
+    "The Earth is flat. (True/False)",
+    "Mount Everest is the tallest mountain in the world. (True/False)",
+    "The Great Wall of China is visible from space. (True/False)",
+    "Cats are nocturnal animals. (True/False)",
+    "Water boils at 100 degrees Fahrenheit. (True/False)",
+    "The Statue of Liberty was a gift from France to the USA. (True/False)",
+    "Sharks are mammals. (True/False)",
+    "The human body has 206 bones. (True/False)",
+    "Bananas grow on trees. (True/False)",
+    "Sound travels faster in water than in air. (True/False)",
 ]
 
 options = [
@@ -30,10 +40,22 @@ options = [
     ["Leonardo da Vinci", "Michelangelo", "Pablo Picasso", "Vincent van Gogh"],
     ["Carbon Dioxide", "Oxygen", "Nitrogen", "Hydrogen"],
     ["Nile", "Amazon", "Mississippi", "Yangtze"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
+    ["True", "False"],
 ]
 
 correct_answers = ["Paris", "True", "Mars", "Mitochondria", "Albert Einstein",
-                   "Japan", "Pacific Ocean", "Leonardo da Vinci", "Carbon Dioxide", "Nile"]
+                "Japan", "Pacific Ocean", "Leonardo da Vinci", "Carbon Dioxide", "Nile",
+                "False", "False", "False", "False", "False",
+                "True", "False", "True", "False", "True"]
 
 current_question = 0
 score = 0
@@ -216,21 +238,38 @@ def end_report():
     
     end_quiz_window = tk.Toplevel(root)
     end_quiz_window.title("Quiz Result")
-    
-    result_label = tk.Label(end_quiz_window, text=result + correct_answers_info)
+
+    # Create a Canvas
+    canvas = tk.Canvas(end_quiz_window)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    # Add a Scrollbar to the Canvas
+    scrollbar = tk.Scrollbar(end_quiz_window, orient=tk.VERTICAL, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Configure the Canvas Scrollbar
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    # Create a Frame inside the Canvas
+    frame = tk.Frame(canvas)
+    canvas.create_window((0, 0), window=frame, anchor=tk.NW)
+
+    result_label = tk.Label(frame, text=result)
     result_label.pack()
 
-    retake_same_user_button = tk.Button(
-        end_quiz_window, text="Retake (Same User)", command=retake_same_user
-    )
+    # Add the correct answers information to the Frame
+    correct_answers_label = tk.Label(frame, text=correct_answers_info)
+    correct_answers_label.pack()
+
+    # Create buttons inside the Frame
+    retake_same_user_button = tk.Button(frame, text="Retake (Same User)", command=retake_same_user)
     retake_same_user_button.pack()
 
-    retake_different_user_button = tk.Button(
-        end_quiz_window, text="Retake (Different User)", command=retake_different_user
-    )
+    retake_different_user_button = tk.Button(frame, text="Retake (Different User)", command=retake_different_user)
     retake_different_user_button.pack()
 
-    quit_button = tk.Button(end_quiz_window, text="Quit", command=root.destroy)
+    quit_button = tk.Button(frame, text="Quit", command=root.destroy)
     quit_button.pack()
 
 def confirm_quit():
