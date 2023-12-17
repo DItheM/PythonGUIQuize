@@ -1,0 +1,5 @@
+Student ID: 123456, Score: 1
+Student ID: 325678, Score: 2
+Student ID: 432543, Score: 3
+Student ID: 332245, Score: 6
+Student ID: 664345, Score: 0
