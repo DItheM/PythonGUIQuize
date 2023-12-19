@@ -4,6 +4,4 @@ Student ID: 432543, Score: 3
 Student ID: 332245, Score: 6
 Student ID: 664345, Score: 0
 Student ID: 433567, Score: 11
-Student ID: 123456, Score: 3
-Student ID: 123456, Score: 6
-Student ID: 123456, Score: 8
+

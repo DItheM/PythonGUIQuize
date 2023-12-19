@@ -6,6 +6,7 @@ root = tk.Tk()
 root.geometry("500x500")
 root.title("Quiz Maker Application")
 
+#questions
 questions = [
     "What is the capital of France?",
     "Python is a high-level programming language. (True/False)",
@@ -29,6 +30,7 @@ questions = [
     "Sound travels faster in water than in air. (True/False)",
 ]
 
+#choices
 options = [
     ["Paris", "London", "Berlin", "Madrid"],
     ["True", "False"],
@@ -52,6 +54,7 @@ options = [
     ["True", "False"],
 ]
 
+#correct answers
 correct_answers = ["Paris", "True", "Mars", "Mitochondria", "Albert Einstein",
                 "Japan", "Pacific Ocean", "Leonardo da Vinci", "Carbon Dioxide", "Nile",
                 "False", "False", "False", "False", "False",
@@ -63,7 +66,7 @@ timer = 10  # Time for each question in seconds
 first_name = ""
 lasy_name = ""
 student_id = ""
-after_id = None
+after_id = None #track the timer function
 end_quiz_window = None
 
 name_label = tk.Label(root, text="Enter First Name:")
@@ -80,6 +83,11 @@ option_buttons = []
 timer_label = tk.Label(root, text="")
 score_label = tk.Label(root, text="")
 
+root.iconbitmap('thd_logo.ico')
+
+#method for displaying questions
+#showing choices
+#calling timer
 def display_question():
     global current_question, score, timer
     if current_question < len(questions):
@@ -95,6 +103,11 @@ def display_question():
             button.pack()
         countdown(timer)         
 
+#check the answer
+#if answer is true adding a score
+#if all questions are over ending the program
+#if timer is still on, closes it
+#if questions are not over show the next question
 def check_answer(selected_option, question_number):
     global score
     if selected_option == correct_answers[question_number]:
@@ -109,6 +122,7 @@ def check_answer(selected_option, question_number):
         current_question = len(questions) - 1
         end_quiz()
 
+#setting the countdown
 def countdown(seconds):
     global current_question, timer,after_id
     if seconds >= 0:
@@ -121,11 +135,12 @@ def countdown(seconds):
         else:
             end_quiz()
 
+#save results to a text file
 def save_results(student_id, score):
-    filename = f"results.txt"
+    filename = f"results-22207050.txt"
     with open(filename, "a") as file:
         file.write(f"Student ID: {student_id}, Score: {score}\n")
-
+#method to end quiz
 def end_quiz():
     global current_question, option_buttons, quit_button, end_quiz_window, student_id
     timer_label.config(text="Quiz ended")
@@ -163,6 +178,7 @@ def end_quiz():
         quit_button.pack()
     save_results(student_id, score)
 
+#method for retake same user method
 def retake_same_user():
     global current_question, score, end_quiz_window, question_label, timer_label, score_label, quit_button 
     end_quiz_window.destroy()
@@ -180,6 +196,7 @@ def retake_same_user():
     shuffle()
     display_question()
 
+#method for retake different user method
 def retake_different_user():
     global current_question, score, end_quiz_window
     end_quiz_window.destroy()
@@ -187,20 +204,14 @@ def retake_different_user():
     shuffle()
     set_entries()
 
+#method forreset the quiz
 def reset_quiz():
     global current_question, score
     current_question = 0
     score = 0
     # Reset any other necessary variables or GUI elements
-    
-def handle_response(response, same_user_func, different_user_func):
-    if response == "Retake (Same User)":
-        same_user_func()
-    elif response == "Retake (Different User)":
-        different_user_func()
-    else:
-        root.destroy()
 
+#methodto shuffle the questions
 def shuffle():
     global questions, options, correct_answers
 
@@ -213,7 +224,7 @@ def shuffle():
     # Unpack shuffled data into separate lists
     questions, options, correct_answers = zip(*combined_data)
 
-
+#create end report
 def end_report():
     global current_question, option_buttons, quit_button, end_quiz_window
     timer_label.config(text="Quiz ended")
@@ -272,10 +283,12 @@ def end_report():
     quit_button = tk.Button(frame, text="Quit", command=root.destroy)
     quit_button.pack()
 
+#method to confirm quit
 def confirm_quit():
     if messagebox.askokcancel("Quit", "Are you sure you want to end the quiz?"):
         end_quiz()
 
+#set all the gui elements again when restarting the game
 def set_entries():
     global name_label, name_entry, surname_label, surname_entry, id_label, id_entry, start_button, quit_button, question_label, timer_label, score_label
     name_label = tk.Label(root, text="Enter First Name:")
@@ -304,6 +317,7 @@ def set_entries():
     score_label = tk.Label(root, text="")
     quit_button = tk.Button(root, text="Quit Quiz", command=confirm_quit)
 
+#method to start the quiz
 def start_quiz():
     global current_question, score, questions, options, correct_answers, first_name, last_name, student_id
     current_question = 0
